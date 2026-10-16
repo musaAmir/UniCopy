@@ -1,0 +1,16 @@
+name: Build and test
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - run: swift test
+      - run: ./build.sh universal
+      - name: Test packaged OCR helper
+        run: build/UniCopy.app/Contents/MacOS/UniCopy --test-worker
