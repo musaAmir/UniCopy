@@ -25,7 +25,8 @@
 
 - **Copy what you can see.** Press <kbd>⌃</kbd> <kbd>⌥</kbd> <kbd>C</kbd>, drag over text in an image, video, slide or error message, and release. Escape cancels.
 - **On-device recognition.** Apple Vision reads the text on your Mac. Nothing is uploaded and no screenshot is saved.
-- **Reads it the way you need it.** Join lines into a paragraph, use language correction for prose, or detect other languages automatically.
+- **Reads it the way you need it.** Join lines into a paragraph, use language correction for prose, or detect other languages automatically. Hold <kbd>⇧</kbd> as you release to flip line joining for one capture.
+- **QR codes and barcodes too.** Select a code and its link or value is copied, above any text around it.
 - **Your shortcut.** Record any combination, or use the menu bar icon.
 - **Never overwrites newer copies.** If you copy something else while recognition runs, your clipboard is kept and the editable result opens instead.
 - **Stays out of the way.** Lives in the menu bar, launches at login if you want, and updates itself from GitHub releases.

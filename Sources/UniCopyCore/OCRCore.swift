@@ -18,8 +18,10 @@ public enum CaptureGeometry {
 
 public struct OCRResult: Codable {
     public let text: String
+    /// Payloads of QR codes and barcodes in the capture, in Vision's order.
+    public let codes: [String]?
     public let error: String?
-    public init(text: String = "", error: String? = nil) { self.text = text; self.error = error }
+    public init(text: String = "", codes: [String] = [], error: String? = nil) { self.text = text; self.codes = codes; self.error = error }
 }
 
 public enum OCRService {
@@ -43,5 +45,14 @@ public enum OCRService {
         // which can interleave neighbouring columns and lines with slightly different baselines.
         let text = (request.results ?? []).compactMap { $0.topCandidates(1).first?.string }.joined(separator: "\n")
         return String(text.prefix(200_000)).trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    public static func detectCodes(_ image: CGImage) throws -> [String] {
+        let request = VNDetectBarcodesRequest()
+        try VNImageRequestHandler(cgImage: image).perform([request])
+        var codes: [String] = []
+        for payload in (request.results ?? []).compactMap({ $0.payloadStringValue?.trimmingCharacters(in: .whitespacesAndNewlines) }) where !payload.isEmpty && !codes.contains(payload) {
+            codes.append(String(payload.prefix(10_000)))
+        }
+        return Array(codes.prefix(20))
     }
 }

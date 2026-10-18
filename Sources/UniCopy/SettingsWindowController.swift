@@ -172,7 +172,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate, NSTa
         stack.addArrangedSubview(group("Text", [
             row(label("Join lines into one paragraph"), toggle(settings.joinLines, "Join lines into one paragraph", #selector(changeJoin(_:)))),
             row(label("Use language correction"), toggle(settings.correctLanguage, "Use language correction", #selector(changeCorrection(_:))))
-        ], footer: [detail("Joining lines suits paragraphs; keep it off for lists, tables and code. Language correction helps natural sentences but can change names and code.")]))
+        ], footer: [detail("Joining lines suits paragraphs; keep it off for lists, tables and code. Hold ⇧ when you release a selection to do the opposite once. Language correction helps natural sentences but can change names and code.")]))
         stack.addArrangedSubview(group("Languages", [
             row(label("Detect other languages automatically"), toggle(settings.automaticLanguage, "Detect other languages automatically", #selector(changeLanguage(_:))))
         ], footer: [detail("By default UniCopy reads your Mac’s preferred languages and English. Automatic detection covers other languages but is slower.")]))

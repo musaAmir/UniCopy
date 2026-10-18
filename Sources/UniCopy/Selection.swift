@@ -6,6 +6,7 @@ struct CaptureSelection {
     let screenFrame: CGRect
     let rect: CGRect
     let scale: CGFloat
+    let flipJoin: Bool
 }
 
 final class SelectionPanel: NSPanel {
@@ -16,6 +17,7 @@ final class SelectionPanel: NSPanel {
 final class SelectionController {
     private var panels: [SelectionPanel] = []
     var completion: ((CaptureSelection?) -> Void)?
+    var hint = "Drag over text · Release to capture · Esc to cancel"
     func start() {
         dismiss()
         for screen in NSScreen.screens {
@@ -26,10 +28,11 @@ final class SelectionController {
             panel.collectionBehavior = [.canJoinAllSpaces,.fullScreenAuxiliary,.stationary,.ignoresCycle]
             panel.hidesOnDeactivate = false
             let view = SelectionView(frame: CGRect(origin: .zero, size: screen.frame.size))
-            view.onSelection = { [weak self] rect in
+            view.hint = hint
+            view.onSelection = { [weak self] rect, flipJoin in
                 guard let self else { return }
                 let result = rect.map { CaptureSelection(displayID: (screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as! NSNumber).uint32Value,
-                    screenFrame: screen.frame, rect: $0, scale: screen.backingScaleFactor) }
+                    screenFrame: screen.frame, rect: $0, scale: screen.backingScaleFactor, flipJoin: flipJoin) }
                 self.dismiss(); self.completion?(result)
             }
             panel.contentView = view; panels.append(panel); panel.orderFrontRegardless()
@@ -43,7 +46,8 @@ final class SelectionController {
 }
 
 final class SelectionView: NSView {
-    var onSelection: ((CGRect?) -> Void)?
+    var onSelection: ((CGRect?, Bool) -> Void)?
+    var hint = ""
     private var start: CGPoint?
     private var selection: CGRect?
     override var acceptsFirstResponder: Bool { true }
@@ -55,11 +59,11 @@ final class SelectionView: NSView {
         needsDisplay = true
     }
     override func mouseUp(with event: NSEvent) {
-        guard let start else { onSelection?(nil); return }
-        onSelection?(CaptureGeometry.selection(from: start,to: convert(event.locationInWindow,from:nil),bounds:bounds))
+        guard let start else { onSelection?(nil,false); return }
+        onSelection?(CaptureGeometry.selection(from: start,to: convert(event.locationInWindow,from:nil),bounds:bounds),event.modifierFlags.contains(.shift))
     }
     override func keyDown(with event: NSEvent) {
-        if event.keyCode == 53 { onSelection?(nil) }
+        if event.keyCode == 53 { onSelection?(nil,false) }
     }
     override func draw(_ dirtyRect: NSRect) {
         NSColor.black.withAlphaComponent(0.16).setFill(); bounds.fill()
@@ -67,7 +71,6 @@ final class SelectionView: NSView {
             NSGraphicsContext.current?.cgContext.clear(selection)
             NSColor.white.setStroke(); let path = NSBezierPath(rect: selection); path.lineWidth = 1.5; path.stroke()
         }
-        let hint = "Drag over text · Release to capture · Esc to cancel"
         let attributes: [NSAttributedString.Key:Any] = [.font:NSFont.systemFont(ofSize:14,weight:.medium), .foregroundColor:NSColor.white]
         let size = (hint as NSString).size(withAttributes: attributes)
         let box = CGRect(x: (bounds.width-size.width-30)/2,y: bounds.height-85,width:size.width+30,height:38)

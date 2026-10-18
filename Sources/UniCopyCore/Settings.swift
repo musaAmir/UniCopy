@@ -51,8 +51,10 @@ public final class UniCopySettings {
             }
         }
     }
-    /// Text as it is copied: optionally joined into one paragraph.
-    public func output(_ recognised: String) -> String {
-        joinLines ? recognised.split(whereSeparator: \.isNewline).joined(separator: " ") : recognised
+    /// Text as it is copied: code payloads first, one per line, then the text, optionally
+    /// joined into one paragraph. `flipJoin` reverses the join setting for one capture.
+    public func output(_ recognised: String, codes: [String] = [], flipJoin: Bool = false) -> String {
+        let text = joinLines != flipJoin ? recognised.split(whereSeparator: \.isNewline).joined(separator: " ") : recognised
+        return (codes + [text]).filter { !$0.isEmpty }.joined(separator: "\n")
     }
 }

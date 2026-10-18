@@ -64,7 +64,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
                 do {
                     let image = try await ScreenCapture.image(for:selected)
                     guard let self, self.session == token else { return }
-                    self.recognize(image,token:token,copy:true)
+                    self.recognize(image,token:token,copy:true,flipJoin:selected.flipJoin)
                 } catch {
                     guard let self, self.session == token else { return }
                     self.finish(error:error.localizedDescription)
@@ -158,20 +158,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
         pasteboardCount = NSPasteboard.general.changeCount
         session = UUID(); setBusy(true); setStatus("Drag over text. Press Esc to cancel.")
         settingsWindow?.window?.orderOut(nil); resultWindow?.orderOut(nil); updateDockPresence()
+        selection.hint = "Drag over text · Hold ⇧ on release to \(settings.joinLines ? "keep" : "join") lines · Esc to cancel"
         selection.start()
     }
     @objc private func cancel() {
         session = nil; selection.dismiss(); task?.cancel(); task = nil; worker?.cancel(); worker = nil
         if statusItem != nil { setBusy(false); setStatus("Ready") }
     }
-    private func recognize(_ image: CGImage,token: UUID,copy: Bool) {
+    private func recognize(_ image: CGImage,token: UUID,copy: Bool,flipJoin: Bool = false) {
         let worker = OCRWorker(); self.worker = worker
         worker.recognize(image:image,correctLanguage:settings.correctLanguage,automaticLanguage:settings.automaticLanguage) { [weak self] result in
             guard let self, self.session == token else { return }
             self.worker = nil; self.task = nil; self.session = nil; self.setBusy(false)
             if let error = result.error { self.finish(error:error); return }
-            guard !result.text.isEmpty else { self.setStatus("No text found. Your clipboard is unchanged."); self.showMessage("No text found",detail:"Try a smaller area with larger or clearer text."); return }
-            self.lastText = self.settings.output(result.text)
+            let codes = result.codes ?? []
+            guard !result.text.isEmpty || !codes.isEmpty else { self.setStatus("No text found. Your clipboard is unchanged."); self.showMessage("No text found",detail:"Try a smaller area with larger or clearer text."); return }
+            self.lastText = self.settings.output(result.text,codes:codes,flipJoin:flipJoin)
             self.resultItem.isEnabled = true
             if copy && NSPasteboard.general.changeCount == self.pasteboardCount {
                 self.writeClipboard(self.lastText); self.setStatus("Copied \(self.lastText.count) characters")

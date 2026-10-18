@@ -13,7 +13,8 @@ let result: OCRResult = autoreleasepool {
     }
     do { return OCRResult(text: try OCRService.recognize(image,
         correctLanguage: CommandLine.arguments.contains("--correct-language"),
-        automaticLanguage: CommandLine.arguments.contains("--auto-language"))) }
+        automaticLanguage: CommandLine.arguments.contains("--auto-language")),
+        codes: try OCRService.detectCodes(image)) }
     catch { return OCRResult(error: error.localizedDescription) }
 }
 FileHandle.standardOutput.write(try JSONEncoder().encode(result))

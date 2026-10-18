@@ -1,5 +1,6 @@
 import XCTest
 import AppKit
+import CoreImage
 @testable import UniCopyCore
 
 final class CaptureTests: XCTestCase {
@@ -41,5 +42,14 @@ final class CaptureTests: XCTestCase {
     }
     func testBlankImageDoesNotInventText() throws {
         XCTAssertEqual(try OCRService.recognize(fixture(text:false)),"")
+        XCTAssertEqual(try OCRService.detectCodes(fixture(text:false)),[])
+    }
+    func testRealVisionReadsQRCode() throws {
+        let filter = CIFilter(name:"CIQRCodeGenerator",parameters:["inputMessage":Data("https://musaamir.github.io/UniCopy/".utf8)])!
+        // Scale up and pad with white, as a code looks on screen.
+        let code = filter.outputImage!.transformed(by:CGAffineTransform(scaleX:10,y:10))
+        let padded = code.transformed(by:CGAffineTransform(translationX:40,y:40)).composited(over:CIImage(color:.white).cropped(to:code.extent.insetBy(dx:-40,dy:-40).offsetBy(dx:40,dy:40)))
+        let image = CIContext().createCGImage(padded,from:padded.extent)!
+        XCTAssertEqual(try OCRService.detectCodes(image),["https://musaamir.github.io/UniCopy/"])
     }
 }

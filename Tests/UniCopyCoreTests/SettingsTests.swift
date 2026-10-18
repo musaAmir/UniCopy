@@ -37,4 +37,16 @@ final class SettingsTests: XCTestCase {
         settings.joinLines = true
         XCTAssertEqual(settings.output("one\ntwo\n\nthree"), "one two three")
     }
+    func testShiftFlipsJoinForOneCapture() {
+        let settings = UniCopySettings(defaults: makeDefaults())
+        XCTAssertEqual(settings.output("one\ntwo", flipJoin: true), "one two")
+        settings.joinLines = true
+        XCTAssertEqual(settings.output("one\ntwo", flipJoin: true), "one\ntwo")
+    }
+    func testCodesComeFirstAndAreNeverJoined() {
+        let settings = UniCopySettings(defaults: makeDefaults())
+        settings.joinLines = true
+        XCTAssertEqual(settings.output("Scan\nme", codes: ["https://a.example", "B-12"]), "https://a.example\nB-12\nScan me")
+        XCTAssertEqual(settings.output("", codes: ["https://a.example"]), "https://a.example")
+    }
 }
