@@ -1,25 +1,61 @@
-# UniCopy
+<p align="center">
+  <img src="website/unicopy/dist/assets/app-icon.png" alt="UniCopy app icon" width="96" height="96">
+</p>
 
-Select an area of your Mac screen and copy its text.
+<h1 align="center">UniCopy</h1>
 
-macOS 14+ · Apple silicon & Intel · Local development version 0.1.0
+<p align="center">
+  <b>Copy text from anywhere on your screen.</b><br>
+  A free menu bar app for your Mac. Select an area, and its text is on your clipboard, recognised on your Mac.
+</p>
 
-Press **Control–Option–C**, drag over text, and release. Escape cancels. Successful recognition copies text with a small confirmation; the menu can reopen the editable result. If you copied something else while recognition was running, UniCopy preserves that newer clipboard and opens a review instead.
+<p align="center">
+  <a href="https://github.com/musaAmir/UniCopy/releases"><b>Download</b></a> ·
+  <a href="https://musaamir.github.io/UniCopy/"><b>Website</b></a> ·
+  macOS 14+ · Apple silicon &amp; Intel
+</p>
 
-- Local Apple Vision OCR, with optional line joining and language correction.
-- Defaults to supported Mac preferred languages plus English. Optional automatic detection supports other Vision languages.
-- Recognition runs only when requested. Its helper exits after each image. The first request can take longer while macOS prepares the recognition model.
-- One temporary text result, no screenshot files, no uploads or background recording.
-- Optional launch at login; menu fallback if the shortcut is already registered.
+<p align="center">
+  <img src="docs/images/preview.png" alt="Illustration of UniCopy capturing a selected area of a receipt on a Mac desktop" width="900">
+</p>
 
-Build: `./build.sh universal` · Test: `swift test`
+<p align="center"><sub>Try it live on the <a href="https://musaamir.github.io/UniCopy/">website</a>: press ⌃⌥C and drag over any text.</sub></p>
 
-Packaged helper check: `build/UniCopy.app/Contents/MacOS/UniCopy --test-worker`
+## Features
 
-Open `build/UniCopy.app`. **Try Sample Text** works without screen access and does not change your clipboard. For screen capture, use **Enable Screen Recording…** and approve UniCopy under System Settings → Privacy & Security → Screen Recording. macOS may ask you to quit and reopen the app.
+- **Copy what you can see.** Press <kbd>⌃</kbd> <kbd>⌥</kbd> <kbd>C</kbd>, drag over text in an image, video, slide or error message, and release. Escape cancels.
+- **On-device recognition.** Apple Vision reads the text on your Mac. Nothing is uploaded and no screenshot is saved.
+- **Reads it the way you need it.** Join lines into a paragraph, use language correction for prose, or detect other languages automatically.
+- **Your shortcut.** Record any combination, or use the menu bar icon.
+- **Never overwrites newer copies.** If you copy something else while recognition runs, your clipboard is kept and the editable result opens instead.
+- **Stays out of the way.** Lives in the menu bar, launches at login if you want, and updates itself from GitHub releases.
 
-If Settings shows UniCopy enabled but Preferences still asks for access after restarting, remove its Screen Recording entry and add the current `build/UniCopy.app` again. Rebuilding these ad-hoc signed development versions can invalidate an earlier permission grant.
+## Settings
 
-Select within one display per capture. Large regions are limited to 4096 pixels per edge to bound memory. OCR can misread small text, code, complex columns, or unsupported languages; the result is editable.
+<table>
+  <tr>
+    <td><img src="website/unicopy/dist/assets/settings-general.png" alt="UniCopy Settings, General page" width="280"></td>
+    <td><img src="website/unicopy/dist/assets/settings-recognition.png" alt="UniCopy Settings, Recognition page" width="280"></td>
+    <td><img src="website/unicopy/dist/assets/settings-shortcut.png" alt="UniCopy Settings, Shortcut page" width="280"></td>
+  </tr>
+</table>
 
-These local builds are ad-hoc signed and not notarized. No update feed or public release has been configured yet. Automated tests use generated images; actual screen capture and mixed-scale physical displays require hands-on testing after approval.
+## Install
+
+1. Download the ZIP from [Releases](https://github.com/musaAmir/UniCopy/releases), unzip it and move **UniCopy.app** to **Applications**.
+2. Open UniCopy. It isn’t notarized by Apple yet, so the first time macOS asks you to choose **Open Anyway** in **System Settings → Privacy & Security**.
+3. Allow UniCopy under **System Settings → Privacy & Security → Screen Recording**. macOS may ask you to reopen the app.
+
+**Try Sample Text** in the menu works without screen access. UniCopy captures only the area you select, when you release. Each capture is read by a helper process that exits right after, and only the latest result is kept until UniCopy quits. Select within one display per capture; very large areas are limited to 4096 pixels per edge.
+
+## Build
+
+Requires Xcode with Swift 5.9 or newer.
+
+```sh
+swift test
+./build.sh universal
+build/UniCopy.app/Contents/MacOS/UniCopy --test-worker   # checks the packaged OCR helper
+```
+
+[Releases and signing](docs/release.md) · [Recognition notes](docs/recognition.md) · [Website source](website/unicopy)

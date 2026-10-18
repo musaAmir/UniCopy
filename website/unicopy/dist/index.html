@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111110">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="UniCopy is a free menu bar app for your Mac. Select any area of your screen and copy its text, recognised on your Mac.">
+  <meta property="og:title" content="UniCopy — Copy text from anywhere on your screen.">
+  <meta property="og:description" content="Select any area of your Mac screen and copy its text. Free, private, on-device.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://musaamir.github.io/UniCopy/">
+  <meta property="og:image" content="https://musaamir.github.io/UniCopy/assets/app-icon.png">
+  <link rel="canonical" href="https://musaamir.github.io/UniCopy/">
+  <link rel="icon" href="assets/app-icon.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+  <title>UniCopy — Copy text from anywhere on your screen</title>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <svg class="defs" aria-hidden="true"><defs>
+    <symbol id="viewfinder" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M2 6.5V4.5A2.5 2.5 0 0 1 4.5 2h2M13.5 2h2A2.5 2.5 0 0 1 18 4.5v2M18 13.5v2a2.5 2.5 0 0 1-2.5 2.5h-2M6.5 18h-2A2.5 2.5 0 0 1 2 15.5v-2M6 7.5h8M6 10h8M6 12.5h5"/></symbol>
+  </defs></svg>
+
+  <header class="nav">
+    <a class="wordmark" href="#" aria-label="UniCopy home"><img src="assets/app-icon.png" alt="" width="28" height="28">UniCopy</a>
+    <nav aria-label="Main">
+      <a href="#features">Features</a>
+      <a href="#questions">Questions</a>
+      <a href="https://github.com/musaAmir/UniCopy" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+    <a class="button button-small" href="#download">Download</a>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title" class="reveal">Copy text from anywhere on your screen.</h1>
+      <p class="subline reveal">Images, videos, slides, error messages. If you can see it, you can copy it.</p>
+      <div class="hero-actions reveal">
+        <a class="button" href="https://github.com/musaAmir/UniCopy/releases">Download for Mac</a>
+        <span class="meta">Free · macOS 14 or later · Apple silicon &amp; Intel</span>
+      </div>
+
+      <!-- A working desktop. Start a capture, drag over text, and it lands on your clipboard. -->
+      <div class="screen reveal" aria-label="Interactive demo of UniCopy on a Mac desktop">
+        <div class="desktop" data-ui>
+          <img class="wallpaper" src="assets/wallpaper.jpg" alt="" width="2400" height="1500">
+
+          <div class="menubar">
+            <span class="mb-left"><b>Preview</b><span>File</span><span>Edit</span><span>View</span><span>Go</span><span>Tools</span><span>Window</span><span>Help</span></span>
+            <span class="mb-right">
+              <button class="app-item" type="button" aria-haspopup="menu" aria-expanded="false" aria-label="UniCopy menu"><svg><use href="#viewfinder"/></svg></button>
+              <svg class="mb-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9a14 14 0 0 1 19 0M6 12.6a9 9 0 0 1 12 0M9.4 16a4 4 0 0 1 5.2 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="19.2" r="1.5" fill="currentColor"/></svg>
+              <svg class="mb-icon battery" viewBox="0 0 30 14" aria-hidden="true"><rect x="1" y="1" width="25" height="12" rx="3.5" fill="none" stroke="currentColor" stroke-opacity=".5" stroke-width="1.2"/><rect x="3" y="3" width="17" height="8" rx="2" fill="currentColor"/><path d="M28 5v4" stroke="currentColor" stroke-opacity=".5" stroke-width="1.6" stroke-linecap="round"/></svg>
+              <span>Sat 18 Oct</span><span>9:41</span>
+            </span>
+            <span class="try-me" aria-hidden="true">Press ⌃⌥C or click here</span>
+          </div>
+
+          <div class="app-menu" role="menu" aria-label="UniCopy" hidden>
+            <button type="button" role="menuitem" data-action="capture">Copy Text from Screen<kbd>⌃⌥C</kbd></button>
+            <button type="button" role="menuitem" data-action="last" disabled>Show Last Result…</button>
+            <button type="button" role="menuitem" data-action="close">Try Sample Text…</button>
+            <hr>
+            <button type="button" role="menuitem" data-action="settings">Settings…<kbd>⌘,</kbd></button>
+            <button type="button" role="menuitem" data-action="close">Check for Updates…</button>
+            <hr>
+            <button type="button" role="menuitem" data-action="close">Quit UniCopy<kbd>⌘Q</kbd></button>
+          </div>
+
+          <!-- Everything inside these windows is drawn as a picture would be: it can't be selected. -->
+          <div class="win win-receipt">
+            <span class="titlebar"><span class="lights"><i></i><i></i><i></i></span><b>receipt.jpg</b><span>Preview</span></span>
+            <span class="paper">
+              <span class="ocr r-head" data-ocr>CAFÉ LINDHOLMEN</span>
+              <span class="ocr r-sub" data-ocr>Lindholmsallén 12, Göteborg</span>
+              <span class="ocr r-sub" data-ocr>18.10.2026 09:12 · Receipt 1042</span>
+              <span class="r-gap"></span>
+              <span class="ocr r-line" data-ocr>Flat white<b>48.00</b></span>
+              <span class="ocr r-line" data-ocr>Cardamom bun<b>39.00</b></span>
+              <span class="ocr r-line" data-ocr>Sparkling water<b>36.45</b></span>
+              <span class="r-gap"></span>
+              <span class="ocr r-total" data-ocr>TOTAL SEK<b>123.45</b></span>
+              <span class="ocr r-sub" data-ocr>VAT 12% included · Card ****4021</span>
+            </span>
+          </div>
+
+          <div class="win win-call">
+            <span class="titlebar"><span class="lights"><i></i><i></i><i></i></span><b>Team call</b><span>Nora is sharing her screen</span></span>
+            <span class="slide">
+              <span class="ocr s-title" data-ocr>Q4 roadmap</span>
+              <span class="ocr s-item" data-ocr>Ship offline mode by 14 November</span>
+              <span class="ocr s-item" data-ocr>Beta sign-ups: hello@lindholmen.studio</span>
+              <span class="ocr s-item" data-ocr>Design review every Thursday at 10:00</span>
+            </span>
+            <span class="call-bar"><span class="face">NL</span><span class="face b">FA</span><span class="face c">SK</span></span>
+          </div>
+
+          <div class="win win-alert">
+            <img src="assets/app-icon.png" alt="" width="52" height="52" class="alert-icon">
+            <span class="ocr a-title" data-ocr>The operation couldn’t be completed.</span>
+            <span class="ocr a-body" data-ocr>(OSStatus error -34018: errSecMissingEntitlement)</span>
+            <span class="a-button">OK</span>
+          </div>
+
+          <div class="capture" hidden>
+            <span class="capture-hint">Drag over text · Release to capture · Esc to cancel</span>
+            <span class="marquee" hidden></span>
+          </div>
+          <div class="hud" hidden><span>✓</span><b>Copied 0 characters</b></div>
+        </div>
+      </div>
+
+      <div class="demo-controls reveal">
+        <p>Press <kbd>⌃</kbd><kbd>⌥</kbd><kbd>C</kbd> or use the menu bar icon, then drag over any text in the windows above. This demo reads the page’s own text; the app recognises real pixels with Apple Vision.</p>
+        <button class="button button-quiet" type="button" data-start>Try a capture</button>
+      </div>
+      <div class="clipboard reveal" aria-live="polite" hidden>
+        <span>Now on your clipboard. Paste it anywhere:</span>
+        <pre id="clipboard-text"></pre>
+      </div>
+    </section>
+
+    <!-- Features, each shown in the real Settings window. -->
+    <section class="features" id="features" aria-labelledby="features-title">
+      <h2 id="features-title" class="reveal">One shortcut. Then just drag.</h2>
+      <div class="feature-split">
+        <div class="feature-list" role="tablist" aria-label="Features">
+          <button type="button" role="tab" class="feature is-on reveal" aria-selected="true" data-shot="general"><b>From any app, in a second</b><span>Press the shortcut, drag over text and release. It’s on your clipboard, with a small confirmation.</span></button>
+          <button type="button" role="tab" class="feature reveal" aria-selected="false" data-shot="recognition"><b>Reads it the way you need it</b><span>Join lines into one paragraph, use language correction for prose, or detect other languages automatically.</span></button>
+          <button type="button" role="tab" class="feature reveal" aria-selected="false" data-shot="shortcut"><b>Your shortcut</b><span>Control, Option, C by default. Record any combination you like, or use the menu bar icon.</span></button>
+        </div>
+        <figure class="shot reveal">
+          <img data-name="general" class="is-on" src="assets/settings-general.png" alt="UniCopy Settings, General: capture, Screen Recording, startup and updates" width="780" height="560">
+          <img data-name="recognition" src="assets/settings-recognition.png" alt="UniCopy Settings, Recognition: join lines, language correction and language detection" width="780" height="560" loading="lazy">
+          <img data-name="shortcut" src="assets/settings-shortcut.png" alt="UniCopy Settings, Shortcut: Control, Option, C copies text from the screen" width="780" height="560" loading="lazy">
+        </figure>
+      </div>
+      <div class="facts">
+        <p class="reveal"><b>Recognised on your Mac.</b> Apple Vision reads the text on-device. Nothing is uploaded, and no screenshot is saved.</p>
+        <p class="reveal"><b>Only when you ask.</b> UniCopy captures just the area you select, at the moment you release. No background recording.</p>
+        <p class="reveal"><b>Never overwrites newer copies.</b> If you copy something else while it works, your clipboard is kept and the result opens for review.</p>
+      </div>
+    </section>
+
+    <section class="faq" id="questions" aria-labelledby="faq-title">
+      <h2 id="faq-title" class="reveal">Good to know</h2>
+      <div class="faq-list">
+        <details class="reveal" open><summary>Will it work on my Mac?</summary><p>UniCopy needs macOS 14 Sonoma or later and runs on Apple silicon and Intel Macs.</p></details>
+        <details class="reveal"><summary>Why does it need Screen Recording?</summary><p>To read the pixels in the area you select. macOS asks for this permission for any app that captures the screen. UniCopy only captures when you drag a selection, and keeps nothing but the latest text, until it quits.</p></details>
+        <details class="reveal"><summary>How do I install it?</summary><p>Unzip the download, move UniCopy to Applications and open it. It isn’t notarized by Apple yet, so the first time, choose Open Anyway in System Settings › Privacy &amp; Security. Then allow UniCopy under Screen Recording in the same pane.</p></details>
+        <details class="reveal"><summary>Which languages does it read?</summary><p>Your Mac’s preferred languages plus English, by default. Turn on automatic detection in Settings for other languages Apple Vision supports. It’s a little slower.</p></details>
+        <details class="reveal"><summary>How accurate is it?</summary><p>Very good on clear text. Small print, code, complex columns or unusual fonts can be misread, so you can edit the result before copying it again. The first capture can take a little longer while macOS prepares its recognition model.</p></details>
+        <details class="reveal"><summary>Is it really free?</summary><p>Yes. No price, no trial and no account. The source code is on <a href="https://github.com/musaAmir/UniCopy" target="_blank" rel="noopener noreferrer">GitHub</a>.</p></details>
+      </div>
+    </section>
+
+    <section class="download" id="download" aria-labelledby="download-title">
+      <img class="reveal" src="assets/app-icon.png" alt="UniCopy app icon" width="96" height="96" loading="lazy">
+      <h2 id="download-title" class="reveal">Stop retyping what’s on your screen.</h2>
+      <a class="button reveal" href="https://github.com/musaAmir/UniCopy/releases">Download for Mac</a>
+      <p class="meta reveal">Free · macOS 14 or later · Apple silicon &amp; Intel<br>Early preview, not yet notarized by Apple.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>UniCopy · Copy what you see.</span>
+    <span class="footer-links"><a href="https://github.com/musaAmir/UniCopy" target="_blank" rel="noopener noreferrer">Source</a><a href="https://github.com/musaAmir/UniCopy/releases" target="_blank" rel="noopener noreferrer">Releases</a><a href="https://github.com/musaAmir/UniCopy/issues" target="_blank" rel="noopener noreferrer">Report an issue</a></span>
+    <span class="credits">Wallpaper by Andrew Ridley on Unsplash</span>
+  </footer>
+</body>
+</html>
