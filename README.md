@@ -28,7 +28,8 @@
 - **Reads it the way you need it.** Join lines into a paragraph, use language correction for prose, or detect other languages automatically. Hold <kbd>⇧</kbd> as you release to flip line joining for one capture.
 - **QR codes and barcodes too.** Select a code and its link or value is copied, above any text around it.
 - **Your shortcut.** Record any combination, or use the menu bar icon.
-- **Never overwrites newer copies.** If you copy something else while recognition runs, your clipboard is kept and the editable result opens instead.
+- **Never overwrites newer copies.** If you copy something else while recognition runs, your clipboard is kept and the editable result opens instead. The capture is still waiting under **Recent Captures**.
+- **Never lose the last few.** Your five most recent results stay in the menu until you quit, ready to copy again.
 - **Stays out of the way.** Lives in the menu bar, launches at login if you want, and updates itself from GitHub releases.
 
 ## Settings
@@ -47,7 +48,7 @@
 2. Open UniCopy. It isn’t notarized by Apple yet, so the first time macOS asks you to choose **Open Anyway** in **System Settings → Privacy & Security**.
 3. Allow UniCopy under **System Settings → Privacy & Security → Screen Recording**. macOS may ask you to reopen the app.
 
-**Try Sample Text** in the menu works without screen access. UniCopy captures only the area you select, when you release. Each capture is read by a helper process that exits right after, and only the latest result is kept until UniCopy quits. Select within one display per capture; very large areas are limited to 4096 pixels per edge.
+**Try Sample Text** in the menu works without screen access. UniCopy captures only the area you select, when you release. Each capture is read by a helper process that exits right after, and your five most recent results stay in memory until UniCopy quits. Select within one display per capture; very large areas are limited to 4096 pixels per edge.
 
 ## Build
 

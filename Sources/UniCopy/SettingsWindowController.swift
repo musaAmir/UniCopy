@@ -178,7 +178,7 @@ final class SettingsWindowController: NSWindowController, NSWindowDelegate, NSTa
         ], footer: [detail("By default UniCopy reads your Mac’s preferred languages and English. Automatic detection covers other languages but is slower.")]))
         stack.addArrangedSubview(group("Privacy", [
             row(label("Recognition runs on this Mac"), detail("Apple Vision"))
-        ], footer: [detail("Each capture is read by a small helper that exits right after. Only the latest result is kept, until UniCopy quits.")]))
+        ], footer: [detail("Each capture is read by a small helper that exits right after. Your five most recent results stay in memory, until UniCopy quits.")]))
         return stack
     }
     private func shortcut() -> NSView {

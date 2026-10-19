@@ -20,6 +20,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
     private var captureItem: NSMenuItem!
     private var cancelItem: NSMenuItem!
     private var resultItem: NSMenuItem!
+    private var recentItem: NSMenuItem!
+    private var recentMenu: NSMenu!
+    private var history = CaptureHistory()
     private var hotkey: GlobalHotkey?
     private var shortcutWarning: String?
     private var recordingShortcut = false
@@ -47,6 +50,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
         captureItem = menuItem("Copy Text from Screen",#selector(capture)); menu.addItem(captureItem)
         cancelItem = menuItem("Cancel Current Capture",#selector(cancel)); cancelItem.isHidden = true; menu.addItem(cancelItem)
         resultItem = menuItem("Show Last Result…",#selector(showLastResult)); resultItem.isEnabled = false; menu.addItem(resultItem)
+        recentItem = NSMenuItem(title: "Recent Captures", action: nil, keyEquivalent: "")
+        recentMenu = NSMenu(); recentMenu.autoenablesItems = false
+        recentItem.submenu = recentMenu; menu.addItem(recentItem)
         menu.addItem(menuItem("Try Sample Text…",#selector(sample)))
         menu.addItem(.separator())
         menu.addItem(menuItem("Settings…",#selector(showSettings),key:","))
@@ -74,7 +80,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
         setStatus("Ready")
         if !CGPreflightScreenCaptureAccess() { showSettings() }
     }
-    func applicationWillTerminate(_ notification: Notification) { cancel(); hotkey = nil; lastText = ""; toastTimer?.invalidate(); toast?.close() }
+    func applicationWillTerminate(_ notification: Notification) { cancel(); hotkey = nil; lastText = ""; history.clear(); toastTimer?.invalidate(); toast?.close() }
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool { showSettings(); return false }
     func applicationDidBecomeActive(_ notification: Notification) { syncControls() }
     func applicationDidResignActive(_ notification: Notification) { settingsWindow?.cancelRecording() }
@@ -144,7 +150,27 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
             for (bit, flag) in [(KeyboardShortcut.control, NSEvent.ModifierFlags.control), (KeyboardShortcut.option, .option), (KeyboardShortcut.shift, .shift), (KeyboardShortcut.command, .command)] where shortcut.modifiers & bit != 0 { mask.insert(flag) }
             captureItem?.keyEquivalentModifierMask = mask
         } else { captureItem?.keyEquivalent = "" }
+        rebuildRecentMenu()
         settingsWindow?.updateState(screenAccess: CGPreflightScreenCaptureAccess(), busy: session != nil, shortcutWarning: shortcutWarning)
+    }
+    private func rebuildRecentMenu() {
+        guard let recentMenu, let recentItem else { return }
+        recentMenu.removeAllItems()
+        guard !history.isEmpty else {
+            let empty = NSMenuItem(title: "No Recent Captures", action: nil, keyEquivalent: "")
+            empty.isEnabled = false; recentMenu.addItem(empty)
+            recentItem.isEnabled = false
+            return
+        }
+        recentItem.isEnabled = true
+        for text in history.entries {
+            let item = NSMenuItem(title: CaptureHistory.preview(text), action: #selector(copyRecent), keyEquivalent: "")
+            item.target = self; item.representedObject = text
+            item.toolTip = "Copy this result · \(text.count) characters"
+            recentMenu.addItem(item)
+        }
+        recentMenu.addItem(.separator())
+        recentMenu.addItem(menuItem("Clear Recent Captures", #selector(clearRecent)))
     }
     private func setStatus(_ value: String) {
         let hint = settings.shortcut.map { " · \($0.display) to copy text" } ?? ""
@@ -174,6 +200,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
             let codes = result.codes ?? []
             guard !result.text.isEmpty || !codes.isEmpty else { self.setStatus("No text found. Your clipboard is unchanged."); self.showMessage("No text found",detail:"Try a smaller area with larger or clearer text."); return }
             self.lastText = self.settings.output(result.text,codes:codes,flipJoin:flipJoin)
+            self.history.add(self.lastText)
             self.resultItem.isEnabled = true
             if copy && NSPasteboard.general.changeCount == self.pasteboardCount {
                 self.writeClipboard(self.lastText); self.setStatus("Copied \(self.lastText.count) characters")
@@ -222,6 +249,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate, NSMe
         toastTimer = Timer.scheduledTimer(withTimeInterval:2,repeats:false) { [weak self] _ in self?.toast?.close(); self?.toast = nil; self?.toastTimer = nil }
     }
     @objc private func showLastResult() { showResult(title:"Last Result") }
+    @objc private func copyRecent(_ sender: NSMenuItem) {
+        guard let text = sender.representedObject as? String else { return }
+        history.promote(text); lastText = text; resultItem.isEnabled = true
+        if let resultText, resultWindow?.isVisible == true { resultText.string = text }
+        writeClipboard(text); setStatus("Copied \(text.count) characters"); showCopiedToast(); syncControls()
+    }
+    @objc private func clearRecent() {
+        history.clear(); syncControls(); setStatus("Recent captures cleared. Your clipboard is unchanged.")
+    }
     @objc private func copyResult() {
         if let resultText { lastText = String(resultText.string.prefix(200_000)) }
         writeClipboard(lastText)
