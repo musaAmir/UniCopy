@@ -16,7 +16,8 @@ if gh release view "$TAG" >/dev/null 2>&1; then echo "Release $TAG already exist
 
 ./build.sh universal
 # Releases must keep the same identity, or every update resets Screen Recording access.
-codesign -dvv build/UniCopy.app 2>&1 | grep -q "^Authority=Musa Apps Signing$" || { echo "Release must be signed with the Musa Apps Signing certificate."; exit 1; }
+# grep must read all input: with pipefail, grep -q can kill codesign with SIGPIPE.
+codesign -dvv build/UniCopy.app 2>&1 | grep "^Authority=Musa Apps Signing$" >/dev/null || { echo "Release must be signed with the Musa Apps Signing certificate."; exit 1; }
 rm -f "$ZIP"
 ditto -c -k --keepParent build/UniCopy.app "$ZIP"
 (cd build && shasum -a 256 "UniCopy-$VERSION.zip" > "UniCopy-$VERSION.sha256")
