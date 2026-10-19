@@ -11,6 +11,6 @@ To release:
 
 The script builds and zips the universal app, signs the zip, creates the GitHub release and publishes `appcast.xml`.
 
-## Verification (0.2.0)
+## Verification (0.3.0)
 
-`swift test` (10 tests) and the packaged helper check passed on a universal build signed by Musa Apps Signing, linked against the macOS 27 SDK with a macOS 14 minimum. The redesigned Settings window (General, Recognition, Shortcut) was inspected in a separate preview bundle. Real screen capture still needs a hands-on check after granting Screen Recording to this build.
+`swift test` (18 tests) and the packaged helper check (`--test-worker`) passed on the universal build signed by Musa Apps Signing, with a macOS 14 minimum. Real screen capture still needs a hands-on check after granting Screen Recording to this build.
