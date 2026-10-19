@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>UniCopy</title>
+    <item>
+      <title>UniCopy 0.3.0</title>
+      <pubDate>Mon, 19 Oct 2026 17:30:19 +0000</pubDate>
+      <sparkle:version>3</sparkle:version>
+      <sparkle:shortVersionString>0.3.0</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <description><![CDATA[<p>Recent Captures keeps your last five recognised results in the menu bar until you quit, so a new copy never loses the text you just captured.</p>]]></description>
+      <enclosure url="https://github.com/musaAmir/UniCopy/releases/download/v0.3.0/UniCopy-0.3.0.zip" sparkle:edSignature="0pnfXfSMvMTYo6vgx728fiAL3HV4uBfKECLofHQYtoekJOXaQDTYwjPNWxgzxCLD41N4EPWdTPJ8z7aE1jfbBQ==" length="1411653" type="application/octet-stream"/>
+    </item>
+  </channel>
+</rss>
